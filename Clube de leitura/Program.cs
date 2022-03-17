@@ -9,10 +9,10 @@ namespace Clube_de_leitura
         public static Caixa[] caixas = new Caixa[5];
         public static int numeroCaixas = 0;
 
-        public static Revista[] revistas = new Revista[5];
+        public static Revista[] revistas = new Revista[1000];
         public static int numeroRevistas = 0;
 
-        public static Amigo[] teuzinhos = new Amigo[5];
+        public static Amigo[] teuzinhos = new Amigo[1000];
         public static int numeroTeu = 0;
 
         public static Emprestimo[] emprestimos = new Emprestimo[1000];
@@ -26,31 +26,50 @@ namespace Clube_de_leitura
 
         public static void Menu()
         {
-            Console.WriteLine("Digite 1 para cadastrar revistas:" +
+            int opcao = 0;
+
+            while (opcao != 6)
+                {
+                Console.WriteLine("Digite 1 para cadastrar revistas:" +
                 "\nDigite 2 para visualizar as revistas: " +
                 "\nDigite 3 para cadastrar amigos: " +
                 "\nDigite 4 para fazer emprestimos: " +
-                "\nDigite 5 para visualizar os emprestimos: ");
-            int opcao = Convert.ToInt32(Console.ReadLine());
+                "\nDigite 5 para visualizar os emprestimos: " +
+                "\nDigite 6 para Sair: ");
+                opcao = Convert.ToInt32(Console.ReadLine());
 
-            switch (opcao)
-            {
-                case 1: CadastrarRevista();
-                    break;
+                switch (opcao)
+                {
+                    case 1:
+                        CadastrarRevista();
+                        break;
 
-                case 2:MostrarRevistas();
-                    break;
+                    case 2:
+                        MostrarRevistas();
+                        break;
 
-                case 3:CadastrarTeuzinho();
-                    break;
+                    case 3:
+                        CadastrarTeuzinho();
+                        break;
 
-                case 4:CadastrarEmprestimo();
-                    break;
+                    case 4:
+                        CadastrarEmprestimo();
+                        break;
 
-                case 5:MostrarEmprestimos();
-                    break;
+                    case 5:
+                        MostrarEmprestimos();
+                        break;
+
+                    case 6:
+                        break;
+
+                    default:
+                        Console.WriteLine("opção Invalida");
+                        break;
+                }
 
             }
+            
 
         }
 
@@ -100,6 +119,7 @@ namespace Clube_de_leitura
         {
             for (int i = 0; i < revistas.Length; i++)
             {
+                if(revistas[i] != null)
                 Console.WriteLine(revistas[i]);
             }
         }
@@ -151,7 +171,8 @@ namespace Clube_de_leitura
         {
             for (int i = 0; i < teuzinhos.Length; i++)
             {
-                Console.WriteLine(teuzinhos[i]);
+                if (teuzinhos[i] != null)
+                    Console.WriteLine(teuzinhos[i]);
             }
         }
 
@@ -182,6 +203,7 @@ namespace Clube_de_leitura
         {
             for (int i = 0; i < emprestimos.Length; i++)
             {
+                if(emprestimos[i] != null)
                 Console.WriteLine(emprestimos[i]);
             }
         }

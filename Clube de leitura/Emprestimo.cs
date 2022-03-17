@@ -16,5 +16,10 @@ namespace Clube_de_leitura
             DataEmprestimo = dataemprestimo;
             DataDevolucao = dataDevolucao;
         }
+
+        public override string ToString()
+        {
+            return $"{Amigo}\n{Revista}\nEmpretimo:{DataEmprestimo} - Devolução:{DataDevolucao}";
+        }
     }
 }
