@@ -4,6 +4,7 @@ namespace Clube_de_leitura
 {
     public class Revista
     {
+        public bool JaFoiEmprestada;
         public string Nome;
         public string TipoDeColecao;
         public string Edicao;
@@ -12,6 +13,7 @@ namespace Clube_de_leitura
 
         public Revista(string nome, string tipoDeColecao, string edicao, string ano, Caixa caixa)
         {
+            JaFoiEmprestada = false;
             Nome = nome;
             TipoDeColecao = tipoDeColecao;
             Edicao = edicao;

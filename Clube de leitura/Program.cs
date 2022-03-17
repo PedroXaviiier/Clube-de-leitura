@@ -180,15 +180,29 @@ namespace Clube_de_leitura
         {
             MostrarTeus();
             Console.WriteLine("Digite o numero do amigo que deseja: ");
-            int IndiceAmigo = Convert.ToInt32(Console.ReadLine());
+            int IndiceAmigo = Convert.ToInt32(Console.ReadLine()) - 1;
 
-            Amigo amigo = teuzinhos[IndiceAmigo - 1];
+            Amigo amigo = teuzinhos[IndiceAmigo];
+
+            if(teuzinhos[IndiceAmigo].JaTemEmprestimo == true)
+            {
+                Console.WriteLine("você ja tem um emprestimo");
+                return;
+            }
+            teuzinhos[IndiceAmigo].JaTemEmprestimo = true;
 
             MostrarRevistas();
             Console.WriteLine("Digite o numero da revista que deseja: ");
-            int IndiceRevista = Convert.ToInt32(Console.ReadLine());
+            int IndiceRevista = Convert.ToInt32(Console.ReadLine()) - 1;
 
-            Revista revista = revistas[IndiceRevista - 1];
+            Revista revista = revistas[IndiceRevista];
+
+            if (revistas[IndiceRevista].JaFoiEmprestada == true)
+            {
+                Console.WriteLine("A revista ja foi emprestada");
+                return;
+            }
+            revistas[IndiceRevista].JaFoiEmprestada = true;
 
             Console.WriteLine("Digite a data de emprestimo: ");
             DateTime DataEmprestimo = Convert.ToDateTime(Console.ReadLine());

@@ -4,6 +4,7 @@ namespace Clube_de_leitura
 {
     public class Amigo
     {
+        public bool JaTemEmprestimo;
         public string Nome;
         public string Responsaveis;
         public string Telefone;
@@ -11,6 +12,7 @@ namespace Clube_de_leitura
 
         public Amigo(string nome, string responsaveis, string telefone, string endereco)
         {
+            JaTemEmprestimo = false;
             Nome = nome;
             Responsaveis = responsaveis;
             Telefone = telefone;
