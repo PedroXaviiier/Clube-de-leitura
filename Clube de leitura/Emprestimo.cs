@@ -7,19 +7,19 @@ namespace Clube_de_leitura
         public Amigo Amigo;
         public Revista Revista;
         public DateTime DataEmprestimo;
-        public DateTime DataDevolucao;
+        public DateTime? DataDevolucao;
 
-        public Emprestimo(Amigo amigo, Revista revista, DateTime dataemprestimo, DateTime dataDevolucao)
+        public Emprestimo(Amigo amigo, Revista revista, DateTime dataDevolucao)
         {
             Amigo = amigo;
             Revista = revista;
-            DataEmprestimo = dataemprestimo;
-            DataDevolucao = dataDevolucao;
+            DataEmprestimo = DateTime.Now;
+            DataDevolucao = dataDevolucao ;
         }
 
         public override string ToString()
         {
-            return $"{Amigo}\n{Revista}\nEmpretimo:{DataEmprestimo} - Devolução:{DataDevolucao}";
+            return $"{Amigo}\n{Revista}\nEmprestimo:{DataEmprestimo} - Devolução:{DataDevolucao}";
         }
     }
 }

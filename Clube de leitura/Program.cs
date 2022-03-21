@@ -9,6 +9,9 @@ namespace Clube_de_leitura
         public static Caixa[] caixas = new Caixa[5];
         public static int numeroCaixas = 0;
 
+        public static Categoria[] categorias = new Categoria[3];
+        public static int numeroCategoria = 0;
+
         public static Revista[] revistas = new Revista[1000];
         public static int numeroRevistas = 0;
 
@@ -18,8 +21,13 @@ namespace Clube_de_leitura
         public static Emprestimo[] emprestimos = new Emprestimo[1000];
         public static int numeroEmprestimo = 0;
 
+        public static Reserva[] reservas = new Reserva[1000];
+        public static int numeroReserva = 0;
+
+
         static void Main(string[] args)
         {
+            PopularCategorias();
             PopularCaixas();
             Menu();
         }
@@ -28,14 +36,16 @@ namespace Clube_de_leitura
         {
             int opcao = 0;
 
-            while (opcao != 6)
-                {
+            while (opcao != 8)
+            {
                 Console.WriteLine("Digite 1 para cadastrar revistas:" +
                 "\nDigite 2 para visualizar as revistas: " +
                 "\nDigite 3 para cadastrar amigos: " +
                 "\nDigite 4 para fazer emprestimos: " +
                 "\nDigite 5 para visualizar os emprestimos: " +
-                "\nDigite 6 para Sair: ");
+                "\nDigite 6 para fazer reservas: " +
+                "\nDigite 7 para visualizar as revervas e fazer emprestimos: " +
+                "\nDigite 8 para Sair: ");
                 opcao = Convert.ToInt32(Console.ReadLine());
 
                 switch (opcao)
@@ -56,11 +66,20 @@ namespace Clube_de_leitura
                         CadastrarEmprestimo();
                         break;
 
+
                     case 5:
                         MostrarEmprestimos();
                         break;
 
                     case 6:
+                        CadastrarReserva();
+                        break;
+
+                    case 7:
+                        MostrarReservasFazerEmprestimos();
+                        break;
+
+                    case 8:
                         break;
 
                     default:
@@ -69,7 +88,7 @@ namespace Clube_de_leitura
                 }
 
             }
-            
+
 
         }
 
@@ -107,6 +126,27 @@ namespace Clube_de_leitura
             caixas[4] = new Caixa(cor, etiqueta, numero);
         }
 
+        public static void PopularCategorias()
+        {
+            string Nome = "Novidade";
+            double DiasEmpretimo = 7;
+
+
+            categorias[0] = new Categoria(Nome, DiasEmpretimo);
+
+            Nome = "Usado";
+            DiasEmpretimo = 20;
+
+
+            categorias[1] = new Categoria(Nome, DiasEmpretimo);
+
+            Nome = "Raro";
+            DiasEmpretimo = 3;
+
+
+            categorias[2] = new Categoria(Nome, DiasEmpretimo);
+        }
+
         public static void MostrarCaixas()
         {
             for (int i = 0; i < caixas.Length; i++)
@@ -119,8 +159,8 @@ namespace Clube_de_leitura
         {
             for (int i = 0; i < revistas.Length; i++)
             {
-                if(revistas[i] != null)
-                Console.WriteLine(revistas[i]);
+                if (revistas[i] != null)
+                    Console.WriteLine(revistas[i]);
             }
         }
 
@@ -139,6 +179,11 @@ namespace Clube_de_leitura
             string ano = Console.ReadLine();
             Console.WriteLine("");
 
+            Console.WriteLine("Digite o numero da categoria: ");
+            numeroCategoria = Convert.ToInt32(Console.ReadLine());
+
+            Categoria categoria = categorias[numeroCategoria - 1];
+
             MostrarCaixas();
 
             Console.WriteLine("\nDigite em qual caixa a revista esta guardada(1-5): ");
@@ -147,7 +192,7 @@ namespace Clube_de_leitura
             Caixa caixa = caixas[indiceCaixa - 1];
 
 
-            revistas[numeroRevistas++] = new Revista(nome, tipoedicao, edicao, ano, caixa);
+            revistas[numeroRevistas++] = new Revista(nome, tipoedicao, edicao, ano, categoria, caixa);
         }
 
         public static void CadastrarTeuzinho()
@@ -184,7 +229,7 @@ namespace Clube_de_leitura
 
             Amigo amigo = teuzinhos[IndiceAmigo];
 
-            if(teuzinhos[IndiceAmigo].JaTemEmprestimo == true)
+            if (teuzinhos[IndiceAmigo].JaTemEmprestimo == true)
             {
                 Console.WriteLine("você ja tem um emprestimo");
                 return;
@@ -202,23 +247,89 @@ namespace Clube_de_leitura
                 Console.WriteLine("A revista ja foi emprestada");
                 return;
             }
+
             revistas[IndiceRevista].JaFoiEmprestada = true;
 
-            Console.WriteLine("Digite a data de emprestimo: ");
-            DateTime DataEmprestimo = Convert.ToDateTime(Console.ReadLine());
+            Console.WriteLine($"Data de emprestimo: {DateTime.Now}");
 
-            Console.WriteLine("Digite a data de devolução: ");
-            DateTime DataDevolucao = Convert.ToDateTime(Console.ReadLine());
+            DateTime DataDevolucao = DateTime.Now.AddDays(revistas[IndiceRevista].Categoria.DiasEmprestimo);
+            Console.WriteLine($"Data de devolução: {DataDevolucao}");
 
-            emprestimos[numeroEmprestimo++] = new Emprestimo(amigo, revista, DataEmprestimo, DataDevolucao);
+            emprestimos[numeroEmprestimo++] = new Emprestimo(amigo, revista, DataDevolucao);
         }
 
         public static void MostrarEmprestimos()
         {
             for (int i = 0; i < emprestimos.Length; i++)
             {
-                if(emprestimos[i] != null)
-                Console.WriteLine(emprestimos[i]);
+                if (emprestimos[i] != null)
+                    Console.WriteLine(emprestimos[i]);
+            }
+        }
+
+        public static void CadastrarReserva()
+        {
+            MostrarTeus();
+            Console.WriteLine("Digite o numero do amigo que deseja: ");
+            int IndiceAmigo = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            Amigo amigo = teuzinhos[IndiceAmigo];
+
+            MostrarRevistas();
+            Console.WriteLine("Digite o numero da revista que deseja: ");
+            int IndiceRevista = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            Revista revista = revistas[IndiceRevista];
+
+            if (revistas[IndiceRevista].JaFoiEmprestada == true)
+            {
+                Console.WriteLine("A revista ja foi emprestada");
+                return;
+            }
+
+            if (revistas[IndiceRevista].JaFoiReservada == true)
+            {
+                Console.WriteLine("A revista ja foi reservada");
+                return;
+            }
+
+            revistas[IndiceRevista].JaFoiReservada = true;
+
+            Console.WriteLine($"Data de reserva: {DateTime.Now}");
+
+            Console.WriteLine($"Data de limite da reserva: {DateTime.Now.AddDays(2)}");
+
+            reservas[numeroReserva++] = new Reserva(amigo, revista);
+
+        }
+
+        public static void MostrarReservasFazerEmprestimos()
+        {
+            for (int i = 0; i < reservas.Length; i++)
+            {
+                if (reservas[i] != null)
+                    Console.WriteLine(reservas[i]);
+            }
+
+            Console.WriteLine("Digite 1 para realizar emprestimo: " +
+                            "\nDigite 2 para sair: ");
+            int opcao = Convert.ToInt32(Console.ReadLine());
+
+            switch (opcao)
+            {
+                case 1:
+                    Console.WriteLine("Digite o numero da reserva que deseja usar: ");
+                    int indiceReserva = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    Amigo amigo = reservas[indiceReserva].Amigo;
+                    Revista revista = reservas[indiceReserva].Revista;
+                    DateTime dataDevolucao = DateTime.Now.AddDays(reservas[indiceReserva].Revista.Categoria.DiasEmprestimo);
+                    emprestimos[numeroEmprestimo++] = new Emprestimo(amigo, revista, dataDevolucao);
+
+                    break;
+
+                case 2:
+                    break;
             }
         }
     }
