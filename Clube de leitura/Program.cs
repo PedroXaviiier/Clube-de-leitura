@@ -21,8 +21,15 @@ namespace Clube_de_leitura
         public static Emprestimo[] emprestimos = new Emprestimo[1000];
         public static int numeroEmprestimo = 0;
 
+        public static Emprestimo[] emprestimosVencidos = new Emprestimo[1000];
+        public static int numeroEmprestimoVencido = 0;
+
+
         public static Reserva[] reservas = new Reserva[1000];
         public static int numeroReserva = 0;
+
+        public static Multa[] multas = new Multa[1000];
+        public static int numeroMulta = 0;
 
 
         static void Main(string[] args)
@@ -209,6 +216,7 @@ namespace Clube_de_leitura
             Console.WriteLine("Digite o endereço do teu: ");
             string endereco = Console.ReadLine();
 
+
             teuzinhos[numeroTeu++] = new Amigo(teu, paisTeu, teulefone, endereco);
 
         }
@@ -217,7 +225,31 @@ namespace Clube_de_leitura
             for (int i = 0; i < teuzinhos.Length; i++)
             {
                 if (teuzinhos[i] != null)
+                {
                     Console.WriteLine(teuzinhos[i]);
+
+                    Console.WriteLine("Digite 1 para ver os emprestimos vencidos do amiguinho: " +
+                        "\n Digite 2 para sair: ");
+                    int opcao = Convert.ToInt32(Console.ReadLine());
+
+                    while (opcao != 2)
+                    {
+                        switch (opcao)
+                        {
+                            case 1:
+                                Console.WriteLine("Digite o amigo que deseja: ");
+                                int numeroAmigo = Convert.ToInt32(Console.ReadLine());
+                                if (emprestimosVencidos[i].Amigo == teuzinhos[numeroAmigo])
+                                {
+                                    Console.WriteLine($"{emprestimosVencidos[i]}");
+                                }
+                                break;
+
+                            case 2:
+                                break;
+                        }
+                    }
+                }  
             }
         }
 
@@ -332,5 +364,37 @@ namespace Clube_de_leitura
                     break;
             }
         }
+
+        public static void GuardarEmprestimosVencidos()
+        {
+            for (int i = 1; i < emprestimos.Length; i++)
+            {
+                if (emprestimos[i].DataDevolucao < DateTime.Now)
+                {
+                    emprestimosVencidos[numeroEmprestimoVencido++] = new Emprestimo(emprestimos[i].Amigo, emprestimos[i].Revista, emprestimos[i].DataDevolucao);
+
+
+                }
+            }
+        }
+
+        public static void CalcularGuardarMulta()
+        {
+            int diasAtraso = (DateTime.Now - emprestimosVencidos[numeroEmprestimoVencido++].DataDevolucao).Days;
+            int valorMulta = diasAtraso * 5;
+
+            multas[numeroMulta++] = new Multa(valorMulta, diasAtraso);
+            
+        }
+
+        public static void MostrarMultas()
+        {
+            for (int i = 0; i < multas.Length; i++)
+            {
+                if (multas[i] != null)
+                    Console.WriteLine(multas[i]);
+            }
+        }
     }
+
 }

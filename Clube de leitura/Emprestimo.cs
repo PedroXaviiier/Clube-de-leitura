@@ -7,7 +7,7 @@ namespace Clube_de_leitura
         public Amigo Amigo;
         public Revista Revista;
         public DateTime DataEmprestimo;
-        public DateTime? DataDevolucao;
+        public DateTime DataDevolucao;
 
         public Emprestimo(Amigo amigo, Revista revista, DateTime dataDevolucao)
         {
